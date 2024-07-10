@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Teal</title>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="{% static 'logo.png' %}" alt="Logo" class="logo">
+            <h2>Optimized Pallet Packing and Visualisation</h2>
+        </div>
+    </header>
+
+    <div>
+        <form id="upload-form" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+        {% csrf_token %}
+        <div class="container-list">
+            <h2>Container List</h2>
+                <div id="form-content"></div>
+                <br>
+                <div id="selected-options"></div>
+                <input type="hidden" name="options" id="options-input">
+            
+        </div>
+        <div class="pallet-settings">
+            <h2>Pallet Settings</h2>
+            <input type="file" id="file-upload" name="file" accept=".csv, .xlsx, .xls">
+            <div id="pallet-details">
+                <h3>Pallet Details</h3>
+                <div id="excelTable" class="pallet_Content palletSettings_Deatails"></div>
+            </div>
+        </div>
+        <input type="submit" value="Generate PDF">
+        </form>
+
+    </div>
+
+    <footer>Teal Ltd.</footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script>
+        function validateForm() {
+            const checkboxes = document.querySelectorAll('.input-checkbox');
+            const options = [];
+            let hasInvalidFields = false;
+            let count=0;
+
+            checkboxes.forEach((checkbox) => {
+                const textbox = checkbox.closest('div').querySelector('.input-text');
+                const textboxValue = textbox.value.trim();
+                if(checkbox.checked==true){
+                    count++;
+                    if (textboxValue === '' || isNaN(textboxValue) || parseInt(textboxValue)<0) {
+                        hasInvalidFields = true;
+                        return;
+                    }
+                    const optionDes=[checkbox.value,parseInt(textboxValue, 10)];
+                    options.push(optionDes);
+                }
+            });
+
+            if (hasInvalidFields) {
+                alert("Please enter valid integer values.");
+                return false;
+            }
+
+            if(count==0){
+                alert("Please select atleast one option");
+                return false;
+            }
+
+            const fileInput = document.getElementById('file-upload');
+            if (!fileInput.files.length) {
+                alert("Please upload a file.");
+                return false;
+            }
+
+            document.getElementById('options-input').value = JSON.stringify(options);
+            
+            const selectedChoices = options.map(opt => ` ${opt[0]}, Quantity: ${opt[1]}`).join('\n');
+            const confirmationMessage = `You have selected the following choices:\nTruck Details:${selectedChoices}\n\nTotal number of pallets: {{ no_of_pallets }}\n\nDo you want to proceed?`;
+            if (!confirm(confirmationMessage)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        function handleFile(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                const html = XLSX.utils.sheet_to_html(worksheet);
+                document.getElementById('excelTable').innerHTML = html;
+            };
+
+            reader.readAsArrayBuffer(file);
+        }
+
+        document.getElementById('file-upload').addEventListener('change', handleFile);
+        
+
+        window.onload = function() {
+            document.getElementById('upload-form').reset();
+            document.getElementById('file-upload').value='';
+            fetch('{% static "impdatajson.json" %}')
+                .then(response => response.json())
+                .then(data => {
+                    let htmlContent = '';
+                    data.forEach(item => {
+                        htmlContent += `
+                            <div>
+                                <label>
+                                    <input type="checkbox" value="${item.Truck_Name}" class="input-checkbox" />
+                                    ${item.Truck_Name}
+                                </label>
+                                <input type="number" class="input-text" placeholder="Enter value" />
+                            </div>
+                            <br/>
+                        `;
+                    });
+                    document.getElementById('form-content').innerHTML = htmlContent;
+                })
+                .catch(error => console.error('Error fetching JSON:', error));
+        };
+    </script>
+    <script>
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+        }
+    </script>
+</body>
+</html>

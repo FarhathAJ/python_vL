@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View PDF</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        iframe {
+            display: block;
+            border: none;
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body onload="msg()">
+    <iframe
+        src="{% static 'res.pdf' %}"
+        frameBorder="0"
+        scrolling="auto"
+    ></iframe>
+</body>
+</html>
+<script>
+    if ( window.history.replaceState ) {
+    window.history.replaceState( null, null, window.location.href );
+    }
+</script>
+
+{% if remaining != 0 %}
+<script>
+    function msg(){
+        alert('BINS NOT SUFFICIENT {{ remaining }} BOX/BOXES YET TO BE PACKED\nTotal bins used so far: {{ nos }}');
+    }
+</script>
+{% endif %}
+{% if remaining == 0 %}
+<script>
+    function msg(){
+        alert('Total bins used: {{ nos }}');
+    }
+</script>
+{% endif %}
+    
+

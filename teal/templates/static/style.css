@@ -1,0 +1,177 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #cfcece;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    border-radius:25px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    height: 10vh;
+    align-items: center;
+    background-color: #f9f9f9;
+}
+
+.header-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-left: 10px;
+    width: 100%;
+}
+
+.header-content h2{
+    margin-left: 22%;
+    color: #04b9bb;
+}
+
+.logo {
+    width: 180px;
+    height: auto;
+}
+
+form{
+    padding: 0%;
+    margin: 0;
+}
+
+#upload-form {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 20px;
+    height: 75vh;
+}
+
+.container-list{
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 20px;
+    width: 25%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 63vh;
+    
+}
+
+.pallet-settings{
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 20px;
+    width: 65%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 63vh;
+}
+
+.container-list h2, .pallet-settings h2 {
+    margin-top: 0;
+    color: #04b9bb;
+    text-align: center;
+}
+
+#form-content{
+    max-height: 50vh;
+    overflow-y: scroll;
+}
+
+#selected-options{
+    margin: 5px;
+    max-height: 15vh;
+    overflow-y: scroll;
+}
+
+ form .container-list div, .pallet-settings div {
+    margin-bottom: 10px;
+}
+
+form .container-list div label {
+    margin-left: 5px;
+}
+
+form .container-list div input[type="text"] {
+    margin-left: 10px;
+    width: 80px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.input-text {
+    border-radius: 5px;
+    border: 1px solid #727373;
+    height: 3vh;
+    width: 50%;
+    padding: 5px;
+    margin: 10px;;
+}
+
+input[type=submit] {
+    background-color: #04b9bb;
+    border: 1.5px solid rgb(116, 115, 115);
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    height: 6vh;
+    margin-top: 3vh;
+    margin-left: 85%;
+}
+
+input[type=submit]:hover {
+    background-color: #398f91;
+}
+
+input[type=file]::file-selector-button {
+    margin-right: 20px;
+    background-color: #04b9bb;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #f2efef;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+input[type=file]::file-selector-button:hover {
+    background: #398f91;
+}
+
+#selected-options{
+    margin-top: 25px;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f9f9f9;
+}
+
+#pallet-details {
+    margin-top: 20px;
+}
+
+#excelTable.pallet_Content.palletSettings_Deatails {
+    max-height: 40vh;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+#excelTable table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#excelTable th, #excelTable td {
+    border: 1px solid #ccc;
+    padding: 8px;
+}
